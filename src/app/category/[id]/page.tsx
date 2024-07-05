@@ -7,9 +7,7 @@ debugger;
   const { id } = params;
 
   return (
-    <StoreProvider>
       <CategoryDetails categoryId={id} />
-    </StoreProvider>
   );
 };
 

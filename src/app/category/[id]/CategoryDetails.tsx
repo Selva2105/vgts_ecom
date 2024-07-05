@@ -8,8 +8,6 @@ import { fetchCategoryProducts } from './CategoryService';
 import { Product } from '@/types/product';
 
 const CategoryDetails = ({ categoryId }: { categoryId: string | number }) => {
-    console.log('id', categoryId);
-
     const { categories } = useStore();
     const category = categories.find(cat => cat.id === Number(categoryId));
 
@@ -37,7 +35,7 @@ const CategoryDetails = ({ categoryId }: { categoryId: string | number }) => {
 
     return (
         <div className='mx-10 mt-4'>
-            <CategoryHeader categoryName={category?.name ?? 'Error occured'} />
+            <CategoryHeader categoryName={category?.name ?? 'Loading'} />
             <CategoryProducts products={categoryProducts} />
         </div>
     );

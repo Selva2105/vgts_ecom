@@ -1,16 +1,14 @@
-"use client";
-
+'use client'
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import React from "react";
 import PillWithNumber from "../ui/pill";
 import ReusableDropdownMenu, { MenuItem } from "./NavDropdown";
-import { useRouter } from "next/navigation";
 import { Settings, ShoppingCart } from "lucide-react";
+import { useStore } from "@/context/StoreContext";
 
 export function NavigationBar() {
-    const router = useRouter();
+
+    const { cartLen } = useStore();
 
     const menuItems: MenuItem[] = [
         {
@@ -55,7 +53,7 @@ export function NavigationBar() {
             <div className="flex items-center gap-4 ml-auto">
 
                 <Button className="w-8 h-8" size="icon" variant="ghost">
-                    <PillWithNumber>
+                    <PillWithNumber productCount={cartLen}>
                         <ShoppingCart className="w-5 h-5" />
                         <span className="sr-only">Toggle cart</span>
                     </PillWithNumber>

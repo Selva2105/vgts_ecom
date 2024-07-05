@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google"
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { NavigationBar } from "@/components/navigation-ui/navigation-bar";
+import { StoreProvider } from "@/context/StoreContext";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -27,8 +28,10 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <NavigationBar />
-        {children}
+        <StoreProvider>
+          <NavigationBar />
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );

@@ -8,9 +8,7 @@ import React from 'react'
 const Categories = () => {
     const { categories, loading, error } = useStore();
     const router = useRouter();
-  
-    console.log(categories, loading, error);
-  
+    
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
 
