@@ -22,7 +22,6 @@ const CategoryProducts = ({ products }: { products: Product[] }) => {
                 <Card
                     className="w-full max-w-xs cursor-pointer hover:shadow-lg flex flex-col justify-between"
                     key={product.id}
-                    onClick={() => router.push(`/product/${product.id}`)}
                 >
                     <img
                         src={product.images[0].toString()}
@@ -30,6 +29,7 @@ const CategoryProducts = ({ products }: { products: Product[] }) => {
                         height="250"
                         alt={product.category.name}
                         className="aspect-[1.6] object-cover"
+                        onClick={() => router.push(`/product/${product.id}`)}
                     />
                     <CardHeader className="p-4">
                         <CardTitle className="text-lg">{product.title}</CardTitle>
