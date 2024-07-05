@@ -1,0 +1,10 @@
+import axios from 'axios';
+
+export const fetchCategoryProducts = async (categoryId: number| string) => {
+  try {
+    const response = await axios.get(`https://api.escuelajs.co/api/v1/products/?categoryId=${categoryId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch products');
+  }
+};
