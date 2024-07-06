@@ -1,5 +1,7 @@
 'use client';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import CardLoader from '@/components/ui/card-loader';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useStore } from '@/context/StoreContext';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -8,8 +10,12 @@ import React from 'react'
 const Categories = () => {
     const { categories, loading, error } = useStore();
     const router = useRouter();
-    
-    if (loading) return <div>Loading...</div>;
+    if (loading) {
+        return (
+            <CardLoader />
+        );
+    }
+
     if (error) return <div>{error}</div>;
 
     return (
@@ -27,7 +33,7 @@ const Categories = () => {
                             width="400"
                             height="250"
                             alt={category.name}
-                            className="aspect-[1.6] object-cover"
+                            className="aspect-[1.6] object-cover rounded-t-lg"
                         />
                         <CardHeader className="p-4">
                             <CardTitle className="text-lg">{category.name}</CardTitle>

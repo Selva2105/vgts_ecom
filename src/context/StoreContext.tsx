@@ -2,18 +2,9 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Product } from '@/types/product';
-
-interface Category {
-  id: number;
-  name: string;
-  image: string;
-}
-
-interface CartItem {
-  product: Product;
-  count: number;
-}
+import { CartItem, Category, Order, Product } from '@/types/product';
+import { useRouter } from 'next/navigation';
+import { fetchCategoriesCall } from '@/utils/ProductService';
 
 interface StoreContextType {
   categories: Category[];
@@ -21,14 +12,18 @@ interface StoreContextType {
   error: string | null;
   cart: CartItem[];
   cartLen: number;
+  orders: Order[];
   addToCart: (product: Product) => void;
   increaseCount: (productId: number) => void;
   decreaseCount: (productId: number) => void;
+  placeOrder: () => void;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export const StoreProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const router = useRouter();
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,16 +35,23 @@ export const StoreProvider: React.FC<React.PropsWithChildren<{}>> = ({ children 
     return [];
   });
   const [cartLen, setCartLen] = useState(0);
+  const [orders, setOrders] = useState<Order[]>(() => {
+    if (typeof window !== 'undefined') {
+      const savedOrders = localStorage.getItem('orders');
+      return savedOrders ? JSON.parse(savedOrders) : [];
+    }
+    return [];
+  });
 
   useEffect(() => {
-      setCartLen(cart.length);
+    setCartLen(cart.length);
   }, [cart.length]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('https://api.escuelajs.co/api/v1/categories');
-        const filteredCategories = response.data.filter(
+        const response = await fetchCategoriesCall();
+        const filteredCategories = response.filter(
           (category: Category) => category.name !== 'Test' && category.name !== 'New Category'
         );
         setCategories(filteredCategories);
@@ -63,8 +65,8 @@ export const StoreProvider: React.FC<React.PropsWithChildren<{}>> = ({ children 
     fetchCategories();
   }, []);
 
-  const updateLocalStorage = (cart: CartItem[]) => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+  const updateLocalStorage = (key: string, value: any) => {
+    localStorage.setItem(key, JSON.stringify(value));
   };
 
   const addToCart = (product: Product) => {
@@ -78,7 +80,7 @@ export const StoreProvider: React.FC<React.PropsWithChildren<{}>> = ({ children 
       } else {
         updatedCart = [...prevCart, { product, count: 1 }];
       }
-      updateLocalStorage(updatedCart);
+      updateLocalStorage('cart', updatedCart);
       return updatedCart;
     });
   };
@@ -88,7 +90,7 @@ export const StoreProvider: React.FC<React.PropsWithChildren<{}>> = ({ children 
       const updatedCart = prevCart.map(item =>
         item.product.id === productId ? { ...item, count: item.count + 1 } : item
       );
-      updateLocalStorage(updatedCart);
+      updateLocalStorage('cart', updatedCart);
       return updatedCart;
     });
   };
@@ -98,13 +100,30 @@ export const StoreProvider: React.FC<React.PropsWithChildren<{}>> = ({ children 
       const updatedCart = prevCart.map(item =>
         item.product.id === productId ? { ...item, count: Math.max(item.count - 1, 0) } : item
       ).filter(item => item.count > 0);
-      updateLocalStorage(updatedCart);
+      updateLocalStorage('cart', updatedCart);
       return updatedCart;
     });
   };
 
+  const placeOrder = () => {
+    const newOrder: Order = {
+      id: Math.random().toString(36).substr(2, 9),
+      items: cart,
+      total: cart.reduce((acc, item) => acc + item.product.price * item.count, 0),
+      createdAt: new Date().toISOString()
+    };
+    setOrders((prevOrders) => {
+      const updatedOrders = [...prevOrders, newOrder];
+      updateLocalStorage('orders', updatedOrders);
+      return updatedOrders;
+    });
+    setCart([]);
+    updateLocalStorage('cart', []);
+    router.push('/my-orders');
+  };
+
   return (
-    <StoreContext.Provider value={{ categories, loading, error, cart, addToCart, increaseCount, decreaseCount, cartLen }}>
+    <StoreContext.Provider value={{ categories, loading, error, cart, addToCart, increaseCount, decreaseCount, cartLen, orders, placeOrder }}>
       {children}
     </StoreContext.Provider>
   );

@@ -4,17 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useStore } from '@/context/StoreContext';
 import { Product } from '@/types/product';
+import { getFirstImageUrl, getProductCount } from '@/utils';
 import { MinusIcon, PlusIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const CategoryProducts = ({ products }: { products: Product[] }) => {
     const { addToCart, cart, increaseCount, decreaseCount } = useStore();
     const router = useRouter();
-
-    const getProductCount = (productId: number) => {
-        const cartItem = cart.find(item => item.product.id === productId);
-        return cartItem ? cartItem.count : 0;
-    };
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
@@ -24,7 +20,7 @@ const CategoryProducts = ({ products }: { products: Product[] }) => {
                     key={product.id}
                 >
                     <img
-                        src={product.images[0].toString()}
+                        src={getFirstImageUrl(product.images)}
                         width="400"
                         height="250"
                         alt={product.category.name}
@@ -32,13 +28,13 @@ const CategoryProducts = ({ products }: { products: Product[] }) => {
                         onClick={() => router.push(`/product/${product.id}`)}
                     />
                     <CardHeader className="p-4">
-                        <CardTitle className="text-lg">{product.title}</CardTitle>
+                        <CardTitle className="text-lg truncate ">{product.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p>₹ {product.price} /-</p>
                     </CardContent>
                     <CardFooter className='w-full justify-center'>
-                        {getProductCount(product.id) === 0 ? (
+                        {getProductCount(cart,product.id) === 0 ? (
                             <Button className='w-full' onClick={() => addToCart(product)}>
                                 Add to Cart
                             </Button>
@@ -56,7 +52,7 @@ const CategoryProducts = ({ products }: { products: Product[] }) => {
                                     </Button>
                                     <div className="flex-1 text-center">
                                         <div className="text-xl font-bold tracking-tighter">
-                                            {getProductCount(product.id)}
+                                            {getProductCount(cart,product.id)}
                                         </div>
                                     </div>
                                     <Button

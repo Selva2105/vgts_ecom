@@ -8,3 +8,12 @@ export const fetchCategoryProducts = async (categoryId: number| string) => {
     throw new Error('Failed to fetch products');
   }
 };
+
+export const fetchCategoriesCall = async () => {
+  try {
+    const response = await axios.get('https://api.escuelajs.co/api/v1/categories');
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch categories');
+  }
+};

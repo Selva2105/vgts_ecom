@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import CategoryHeader from './CategoryHeader';
 import CategoryProducts from './CategoryProducts';
 import { useStore } from '@/context/StoreContext';
-import { fetchCategoryProducts } from './CategoryService';
+import { fetchCategoryProducts } from '../../../utils/ProductService';
 import { Product } from '@/types/product';
+import CardLoader from '@/components/ui/card-loader';
 
 const CategoryDetails = ({ categoryId }: { categoryId: string | number }) => {
     const { categories } = useStore();
@@ -30,7 +31,11 @@ const CategoryDetails = ({ categoryId }: { categoryId: string | number }) => {
         fetchProducts();
     }, [categoryId]);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) {
+        return (
+            <CardLoader />
+        );
+    }
     if (error) return <p>{error}</p>;
 
     return (
