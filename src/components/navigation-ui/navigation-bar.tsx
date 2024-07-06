@@ -30,17 +30,6 @@ export function NavigationBar() {
                 { label: "My Orders", link: "/my-orders" },
             ],
         },
-        { type: "separator" },
-        {
-            type: "sub",
-            label: "Support",
-            items: [
-                { label: "Contact sales", link: "/contact-sales" },
-                { label: "Chat", link: "/chat" },
-            ],
-        },
-        { type: "separator" },
-        { type: "D_Button", label: "Log out" },
     ];
 
 

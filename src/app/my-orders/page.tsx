@@ -1,26 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
+import { Button } from '@/components/ui/button';
 import { useStore } from '@/context/StoreContext'
 import { getFirstImageUrl } from '@/utils';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 const Orders = () => {
   const { orders } = useStore();
-
-  if (orders.length === 0) {
-    return <div className='mx-10 mt-4'>
-      <h1>No orders yet</h1>
-    </div>
-  }
+  const router = useRouter();
 
   const getProductCount = (productId: number | string) => {
     const item = orders.find((order) => order.items.find((item) => item.product.id === productId));
     return item?.items.find((item) => item.product.id === productId)?.count || 0;
   };
 
+  if(orders.length === 0){
+    return <div className='mx-10 mt-4'>
+        <h2 className='text-2xl font-semibold'>Orders</h2>
+        <div className="w-full flex flex-col items-center justify-center">
+            <Image src="/images/searching.svg" alt="Empty Cart" width={500} height={500} />
+            <div className='flex flex-col items-center justify-center gap-4 mt-4'>
+                <p className='text-gray-600'>No orders yet </p>
+                <Button onClick={() => router.push('/')} className='w-52'>Go to home</Button>
+            </div>
+        </div>
+    </div>
+}
+
   return (
     <div className='mx-10 mt-4'>
-      <h1>Orders</h1>
+      <h1 className='text-2xl font-semibold'>Orders</h1>
 
       <div className='mt-4'>
         {

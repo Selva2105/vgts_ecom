@@ -5,11 +5,14 @@ import { Button } from '@/components/ui/button';
 import { useStore } from '@/context/StoreContext';
 import { getFirstImageUrl, getProductCount } from '@/utils';
 import { MinusIcon, PlusIcon } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState, useCallback, useMemo } from 'react';
 
 const Cart = () => {
     const { cart, decreaseCount, increaseCount, placeOrder } = useStore();
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const handlePlaceOrder = useCallback(() => {
         setIsLoading(true);
@@ -22,6 +25,19 @@ const Cart = () => {
     const totalAmount = useMemo(() => {
         return cart.reduce((acc, item) => acc + item.product.price * getProductCount(cart, item.product.id), 0);
     }, [cart]);
+
+    if (cart.length === 0) {
+        return <div className='mx-10 mt-4'>
+            <h2 className='text-2xl font-semibold'>Cart items</h2>
+            <div className="w-full flex flex-col items-center justify-center">
+                <Image src="/images/searching.svg" alt="Empty Cart" width={500} height={500} />
+                <div className='flex flex-col items-center justify-center gap-4 mt-4'>
+                    <p className='text-gray-600'>No items in cart </p>
+                    <Button onClick={() => router.push('/')} className='w-52'>Go to home</Button>
+                </div>
+            </div>
+        </div>
+    }
 
     return (
         <div className='mx-10 mt-4'>
