@@ -21,10 +21,10 @@ const Categories = () => {
     return (
         <div className="mx-10 mt-4">
             <h1 className="text-2xl font-bold">Categories</h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
                 {categories.map((category) => (
                     <Card
-                        className="w-full max-w-xs cursor-pointer hover:shadow-lg"
+                        className="w-full md:max-w-xs cursor-pointer hover:shadow-lg"
                         key={category.id}
                         onClick={() => router.push(`/category/${category.id}`)}
                     >

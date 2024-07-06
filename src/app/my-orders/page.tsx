@@ -45,15 +45,15 @@ const Orders = () => {
               <div className="flex flex-col items-staet gap-4 mt-4">
                 {order.items.map((item, index) => (
                   <React.Fragment key={item.product.id}>
-                    <div className='flex flex-row items-center justify-between gap-4'>
-                      <div className='flex flex-row items-center gap-4 w-2/4'>
-                        <img src={getFirstImageUrl(item.product.images)} alt={item.product.title} className='w-20 h-20' />
-                        <span className='flex flex-col gap-2'>
+                    <div className='flex flex-col md:flex-row items-center justify-between gap-4'>
+                      <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-[60%] lg:w-2/4'>
+                        <img src={getFirstImageUrl(item.product.images)} alt={item.product.title} className='w-full md:w-20 md:h-20' />
+                        <span className='w-full flex flex-col gap-2'>
                           <h3 className='text-base'>{order.items[0].product.title}</h3>
                           <p className='text-base '>₹ {order.items[0].product.price} /-</p>
                         </span>
                       </div>
-                      <div className='flex flex-row justify-end items-center w-2/4'>
+                      <div className='flex flex-row justify-start md:justify-end items-center w-full md:w-[40%] lg:w-2/4'>
                         <p>{item.product.price} x {getProductCount(item.product.id)} = {item.product.price * getProductCount(item.product.id)}</p>
                       </div>
                     </div>

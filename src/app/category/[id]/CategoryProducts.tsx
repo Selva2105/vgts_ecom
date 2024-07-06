@@ -13,10 +13,10 @@ const CategoryProducts = ({ products }: { products: Product[] }) => {
     const router = useRouter();
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
             {products.map((product) => (
                 <Card
-                    className="w-full max-w-xs cursor-pointer hover:shadow-lg flex flex-col justify-between"
+                    className="w-full md:max-w-xs cursor-pointer hover:shadow-lg flex flex-col justify-between"
                     key={product.id}
                 >
                     <img
