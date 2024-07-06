@@ -1,11 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import { Product } from '@/types/product';
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { fetchProductById } from './ProductService';
 import { useStore } from '@/context/StoreContext';
 import { Button } from '@/components/ui/button';
 import { MinusIcon, PlusIcon } from 'lucide-react';
 import { getProductCount } from '@/utils';
+import { fetchProductById } from '@/utils/ProductService';
 
 const ProductDetails = React.memo(({ productId }: { productId: string }) => {
     const [product, setProduct] = useState<Product | null>(null);

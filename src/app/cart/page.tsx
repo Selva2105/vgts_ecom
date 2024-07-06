@@ -27,22 +27,23 @@ const Cart = () => {
     }, [cart]);
 
     if (cart.length === 0) {
-        return <div className='mx-10 mt-4'>
-            <h2 className='text-2xl font-semibold'>Cart items</h2>
-            <div className="w-full flex flex-col items-center justify-center">
-                <Image src="/images/searching.svg" alt="Empty Cart" width={500} height={500} />
-                <div className='flex flex-col items-center justify-center gap-4 mt-4'>
-                    <p className='text-gray-600'>No items in cart </p>
-                    <Button onClick={() => router.push('/')} className='w-52'>Go to home</Button>
+        return (
+            <div className='mx-10 mt-4'>
+                <h2 className='text-2xl font-semibold'>Cart items</h2>
+                <div className="w-full flex flex-col items-center justify-center">
+                    <Image src="/images/searching.svg" alt="Empty Cart" width={500} height={500} />
+                    <div className='flex flex-col items-center justify-center gap-4 mt-4'>
+                        <p className='text-gray-600'>No items in cart </p>
+                        <Button onClick={() => router.push('/')} className='w-52'>Go to home</Button>
+                    </div>
                 </div>
             </div>
-        </div>
+        );
     }
 
     return (
         <div className='mx-10 mt-4'>
             <h2 className='text-2xl font-semibold'>Cart items</h2>
-
             <div className="flex flex-row gap-4">
                 <div className="w-[60%] flex flex-col gap-4 mt-4 ">
                     {cart.map((item) => (
@@ -101,7 +102,6 @@ const Cart = () => {
                             </li>
                         </ul>
                     </div>
-
                     <Button className='w-full' onClick={handlePlaceOrder} disabled={isLoading}>
                         {isLoading ? 'Placing Order...' : 'Place Order'}
                     </Button>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import CategoryHeader from './CategoryHeader';
 import CategoryProducts from './CategoryProducts';
 import { useStore } from '@/context/StoreContext';
@@ -16,25 +16,23 @@ const CategoryDetails = ({ categoryId }: { categoryId: string | number }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetchCategoryProducts(categoryId);
-                setCategoryProducts(response);
-                setLoading(false);
-            } catch (err) {
-                setError('Failed to fetch products');
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
+    const fetchProducts = useCallback(async () => {
+        try {
+            const response = await fetchCategoryProducts(categoryId);
+            setCategoryProducts(response);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch products');
+            setLoading(false);
+        }
     }, [categoryId]);
 
+    useEffect(() => {
+        fetchProducts();
+    }, [fetchProducts]);
+
     if (loading) {
-        return (
-            <CardLoader />
-        );
+        return <CardLoader />;
     }
     if (error) return <p>{error}</p>;
 
